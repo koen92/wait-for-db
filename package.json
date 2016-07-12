@@ -1,6 +1,6 @@
 {
   "name": "wait-for-db",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Wait for a DB to be up and running using Knex.",
   "repository": {
     "type": "git",
