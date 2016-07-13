@@ -4,6 +4,10 @@ Wait for the db to be up and/or initialized using knex. It exits successfully as
 is in the desired state. If the db remains offline after the maximum tries the scripts exits
 with an error.
 
+## Installation
+
+`$ npm install -g https://github.com/tippiq/wait-for-db.git`
+
 ## Usage
 `wait-for-db [-d] [-v] [-q] [-i] [-t tries] [-s seconds]`
 - `-d` debug
