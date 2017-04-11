@@ -2,9 +2,13 @@
   "name": "wait-for-db",
   "version": "1.1.0",
   "description": "Wait for a DB to be up and running using Knex.",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tippiq/wait-for-db.git"
+  },
+  "engines": {
+    "node": "6.9.1"
   },
   "dependencies": {
     "knex": "0.12.6"
