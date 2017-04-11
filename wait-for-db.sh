@@ -13,13 +13,14 @@ which knex > /dev/null || ( echo "Usage: npm install" >&2; exit 11 )
 
 usage() {
   cat <<EOF >&2
-Usage: $(basename $0) [-d] [-v] [-q] [-i] [-t tries] [-s seconds]
+Usage: $(basename $0) [-d] [-v] [-q] [-i] [-t tries] [-s seconds] [-f knexfile]
     -d debug (default=$DEBUG)
     -v verbose (default=$VERBOSE)
     -q quiet operation, turn debug and verbose off
     -i wait until db is initialized (default=$INITIALIZED)
     -t how many tries are done (default=$TRIES)
     -s how many seconds to wait between tries (default=$SECONDS)
+    -f use a custom filename for --knexfile
 
 Wait for the db to be up and/or initialized using knex. It exits successfully as soon as the db
 is in the desired state. If the db remains offline after the maximum tries the scripts exits
@@ -28,7 +29,7 @@ EOF
   exit 12;
 }
 
-while getopts "hdvqit:s:" opt; do
+while getopts "hdvqit:s:f:" opt; do
   case $opt in
     d) DEBUG=true; set -x ;; # debug
     v) VERBOSE=true ;; # verbose
@@ -36,16 +37,20 @@ while getopts "hdvqit:s:" opt; do
     t) TRIES=$OPTARG ;;
     s) SECONDS=$OPTARG ;;
     i) INITIALIZED=1 ;;
+    f) KNEXFILE=$OPTARG ;;
     \?) echo "Invalid option: -"$OPTARG"" >&2; usage;;
     h) usage;;
   esac
 done
 
+KF="--knexfile $(basename $KNEXFILE)"
+cd $(dirname $KNEXFILE)
+
 DB_STATUS=''
 DB_UP=2
 for i in $(seq $TRIES -1 1)
 do
-  DB_STATUS=$(knex migrate:currentVersion 2>/dev/null | awk '/Current Version:/{print $3}')
+  DB_STATUS=$(knex $KF migrate:currentVersion 2>/dev/null | awk '/Current Version:/{print $3}')
   : "($i) DB_STATUS=$DB_STATUS"
   case "$DB_STATUS" in
     "")
