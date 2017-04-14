@@ -43,8 +43,12 @@ while getopts "hdvqit:s:f:" opt; do
   esac
 done
 
-KF="--knexfile $(basename $KNEXFILE)"
-cd $(dirname $KNEXFILE)
+
+if [ "$KNEXFILE" ]
+then
+  KF="--knexfile $(basename $KNEXFILE)"
+  cd $(dirname $KNEXFILE)
+fi
 
 DB_STATUS=''
 DB_UP=2
